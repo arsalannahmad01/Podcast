@@ -34,7 +34,7 @@ const Home = () => {
       }, [])
 
     const getPodcast = async (token) => {   
-        const res = await axios.get(`https://api-podcast.onrender.com/api/v1/podcast/get-podcast`, {headers:{
+        const res = await axios.get(`https://api-podcast.onrender.com/api/v1/user/get-podcast`, {headers:{
             Authorization:`Bearer ${token}`
         }})     
         setPodcast(res.data)
