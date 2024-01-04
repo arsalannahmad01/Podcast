@@ -27,11 +27,15 @@
 .category-btn {
   padding: 10px 15px;
   background: #cfe2ff;
-  /* box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2); */
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .category-btn:hover {
   cursor: pointer;
+  background-color:#bad5fd ;
 }
 
 .category h3 {

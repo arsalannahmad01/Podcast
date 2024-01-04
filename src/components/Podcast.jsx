@@ -27,6 +27,7 @@ const Podcast = ({ isOpen, onClose }) => {
     file: ''
   });
   const [token, setToken] = useState(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'))
@@ -56,6 +57,8 @@ const Podcast = ({ isOpen, onClose }) => {
     const { name, value } = e.target;
     const file = e.target.files[0]
 
+    setUploading(true)
+
     const imageRef = ref(storage, `files/${ v4() + file.name}`)
     await uploadBytes(imageRef, file)
 
@@ -64,11 +67,13 @@ const Podcast = ({ isOpen, onClose }) => {
     // value = res
     setFormData({ ...formData, [name]: res });
     // setProfile(res)
+    setUploading(false)
+
 }
 
 const handlePodcast = async() => {
 
-    const res = await axios.post(`http://localhost:8000/api/v1/podcast/create-podcast`, formData, {headers:{
+    const res = await axios.post(`https://api-podcast.onrender.com/api/v1/podcast/create-podcast`, formData, {headers:{
         Authorization:`Bearer ${token}`
     }})
 
@@ -146,6 +151,8 @@ console.log(formData);
             onChange={uploadMedia}
           />
         </label>
+        <br/>
+        {uploading ? <p>Uploading...</p> : null}
         <br/>
         <button type="submit" onClick={handlePodcast} >Create</button>
       </form>

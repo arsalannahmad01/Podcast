@@ -48,7 +48,7 @@ const Signup = ({ isOpen, onClose }) => {
         return
     }
 
-    const res = await axios.post(`http://localhost:8000/api/v1/user/register`, formData)
+    const res = await axios.post(`https://api-podcast.onrender.com/api/v1/user/register`, formData)
     console.log(res.data)
     console.log(res.data.token)
 

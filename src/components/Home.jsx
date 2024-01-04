@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Home.css'
 import podcastIcon from "./microphone.png"
 import Podcast from './Podcast';
 import Signup from './Signup';
 import Login from './Login';
-import { Link } from 'react-router-dom';
+import axios from 'axios'
+import VideoPlayer from './VideoPlayer';
 
 const Home = () => {
 
     const [isPodcastOpen, setIsPodcastOpen] = useState(false)
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [isLoginOpen, setIsLoginOpen] = useState(false)
+
+    const [podcast, setPodcast] = useState(null)
+    const [filteredPodcast, setFilteredPodcast] = useState(null)
+    const [videoAudio, setVideoAudio] = useState('select')
 
     const openPodcast = () => { setIsPodcastOpen(true) }
     const closePodcast = () => { setIsPodcastOpen(false) }
@@ -22,6 +27,25 @@ const Home = () => {
     const openLogin = () => { setIsLoginOpen(true) }
     const closeLogin = () => { setIsLoginOpen(false) }
 
+
+    useEffect(() => {
+        const token =  JSON.parse(localStorage.getItem('token'))
+        getPodcast(token)
+      }, [])
+
+    const getPodcast = async (token) => {   
+        const res = await axios.get(`https://api-podcast.onrender.com/api/v1/podcast/get-podcast`, {headers:{
+            Authorization:`Bearer ${token}`
+        }})     
+        setPodcast(res.data)
+    }
+
+    const handleVideoAudio = (e) => {
+        setVideoAudio(e.target.value)
+
+    }
+
+    console.log(podcast);
 
     return (
         <>
@@ -51,7 +75,27 @@ const Home = () => {
                 </div>
 
             </div>
-            <div className='col' >Main</div>
+            <div className='col' >
+            <div className='row row-cols-1 row-cols-md-4 g-4' style={{padding:"20px", overflow:"auto"}} >
+                <div>
+                    <select onChange={handleVideoAudio} value={videoAudio} >
+                        <option value="video">Video</option>
+                        <option value="audio">Audio</option>
+                    </select>
+                </div>
+                {podcast && podcast.map((item, key) => (
+                    <div class="col" key={key} >
+                    <div class="card" style={{padding:"5px"}} >
+                        <VideoPlayer videoUrl={item.file} />
+                      <div class="card-body">
+                        <h5 class="card-title">{item.name}</h5>
+                        <p class="card-text">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                </div>
+            </div>
         </div>
     </div>
 

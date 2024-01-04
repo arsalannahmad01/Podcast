@@ -38,7 +38,7 @@ const Login = ({ isOpen, onClose }) => {
 
 
   const handleLogin = async() => {
-    const res = await axios.post(`http://localhost:8000/api/v1/user/login`, formData)
+    const res = await axios.post(`https://api-podcast.onrender.com/api/v1/user/login`, formData)
 
     if(!res.data) {
         alert('Something went wrong while login')
